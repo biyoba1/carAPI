@@ -6,7 +6,7 @@ import (
 )
 
 func InitializeRoutes(router *gin.Engine) {
-	handler := handler.CarHandler{} // Предположим, что CarHandler определен в вашем пакете internal
+	handler := handler.CarHandler{} 
 	router.GET("/cars", handler.GetCar)
 	router.POST("/cars", handler.AddCar)
 	router.PUT("/cars/:id", handler.UpdateCar)
