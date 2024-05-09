@@ -1,0 +1,170 @@
+swagger: "2.0"
+info:
+  title: Car Service API
+  description: API for managing cars
+  version: 1.0.0
+
+host: localhost:8080
+basePath: /
+schemes:
+  - http
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+paths:
+  /cars:
+    get:
+      summary: Get all cars
+      description: Returns a list of all cars
+      responses:
+        200:
+          description: List of cars
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Car'
+        500:
+          description: Internal Server Error
+    post:
+      summary: Add new cars
+      description: Adds new cars to the database
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: newCarsReq
+          required: true
+          schema:
+            $ref: '#/definitions/NewCarsRequest'
+      responses:
+        201:
+          description: New cars added successfully
+          schema:
+            type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+    delete:
+      summary: Delete a car
+      description: Deletes a car by ID
+      parameters:
+        - in: query
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Car deleted successfully
+          schema:
+            type: object
+            properties:
+              deleteCar:
+                $ref: '#/definitions/DeleteCarResponse'
+              deleteOwner:
+                $ref: '#/definitions/DeleteOwnerResponse'
+        404:
+          description: Car not found
+        500:
+          description: Internal Server Error
+
+
+  /cars/{id}:
+    put:
+      summary: Update a car
+      description: Updates a car by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: reg_num
+          type: string
+        - in: query
+          name: mark
+          type: string
+        - in: query
+          name: model
+          type: string
+        - in: query
+          name: year
+          type: string
+        - in: query
+          name: owner_name
+          type: string
+        - in: query
+          name: owner_surname
+          type: string
+        - in: query
+          name: owner_patronymic
+          type: string
+      responses:
+        200:
+          description: Car updated successfully
+          schema:
+            type: object
+            properties:
+              oldInfo:
+                $ref: '#/definitions/Car'
+              newInfo:
+                $ref: '#/definitions/Car'
+        404:
+          description: Car not found
+        500:
+          description: Internal Server Error
+
+definitions:
+  Car:
+    type: object
+    properties:
+      ID:
+        type: integer
+      RegNum:
+        type: string
+      Mark:
+        type: string
+      Model:
+        type: string
+      Year:
+        type: string
+      OwnerName:
+        type: string
+      OwnerSurname:
+        type: string
+      OwnerPatronymic:
+        type: string
+
+  DeleteCarResponse:
+    type: object
+    properties:
+      Registration_number:
+        type: string
+      Mark_of_car:
+        type: string
+      Model:
+        type: string
+      Year:
+        type: string
+
+  DeleteOwnerResponse:
+    type: object
+    properties:
+      Name_of_owner:
+        type: string
+      Surname_of_owner:
+        type: string
+      Patronymic_of_owner:
+        type: string
+
+  NewCarsRequest:
+    type: object
+    properties:
+      RegNums:
+        type: array
+        items:
+          type: string
